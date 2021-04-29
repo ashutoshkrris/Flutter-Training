@@ -49,14 +49,26 @@ class _LoginScreenState extends State<LoginScreen> {
       padding: const EdgeInsets.all(20.0),
       child: TextFormField(
         decoration: InputDecoration(
+          prefixIcon: Icon(
+            Icons.email,
+            color: Colors.deepPurple,
+          ),
           labelText: "Email",
           hintText: "user@domain.com",
           border: OutlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.cyan,
+              color: Colors.deepPurple,
               style: BorderStyle.solid,
               width: 4.0,
             ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(42.0)),
+            borderSide: BorderSide(color: Colors.deepPurple, width: 2),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(42.0)),
+            borderSide: BorderSide(color: Colors.green, width: 2),
           ),
         ),
         keyboardType: TextInputType.emailAddress,
@@ -78,12 +90,24 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration: InputDecoration(
           labelText: "Password",
           hintText: "Enter a strong password",
+          prefixIcon: Icon(
+            Icons.lock,
+            color: Colors.deepPurple,
+          ),
           border: OutlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.cyan,
+              color: Colors.deepPurple,
               style: BorderStyle.solid,
               width: 4.0,
             ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(42.0)),
+            borderSide: BorderSide(color: Colors.deepPurple, width: 2),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(42.0)),
+            borderSide: BorderSide(color: Colors.green, width: 2),
           ),
         ),
         keyboardType: TextInputType.visiblePassword,
@@ -118,6 +142,9 @@ class _LoginScreenState extends State<LoginScreen> {
         style: ElevatedButton.styleFrom(
           minimumSize: Size(150, 50),
           elevation: 20,
+          shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(30.0),
+          ),
         ),
       ),
     );

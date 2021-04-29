@@ -40,7 +40,19 @@ class SplashScreen extends StatelessWidget {
                 },
                 child: Text(
                   'Continue',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontFamily: 'productSans',
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(150, 50),
+                  elevation: 20,
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(30.0),
+                  ),
                 ),
               ),
             ),

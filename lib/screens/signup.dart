@@ -53,12 +53,24 @@ class _SignupScreenState extends State<SignupScreen> {
         decoration: InputDecoration(
           labelText: "Name",
           hintText: "Ashutosh Krishna",
+          prefixIcon: Icon(
+            Icons.account_circle,
+            color: Colors.deepPurple,
+          ),
           border: OutlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.cyan,
+              color: Colors.deepPurple,
               style: BorderStyle.solid,
               width: 4.0,
             ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(42.0)),
+            borderSide: BorderSide(color: Colors.deepPurple, width: 2),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(42.0)),
+            borderSide: BorderSide(color: Colors.green, width: 2),
           ),
         ),
         keyboardType: TextInputType.name,
@@ -78,14 +90,26 @@ class _SignupScreenState extends State<SignupScreen> {
       padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
       child: TextFormField(
         decoration: InputDecoration(
+          prefixIcon: Icon(
+            Icons.email,
+            color: Colors.deepPurple,
+          ),
           labelText: "Email",
           hintText: "user@domain.com",
           border: OutlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.cyan,
+              color: Colors.deepPurple,
               style: BorderStyle.solid,
               width: 4.0,
             ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(42.0)),
+            borderSide: BorderSide(color: Colors.deepPurple, width: 2),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(42.0)),
+            borderSide: BorderSide(color: Colors.green, width: 2),
           ),
         ),
         keyboardType: TextInputType.emailAddress,
@@ -105,14 +129,26 @@ class _SignupScreenState extends State<SignupScreen> {
       padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
       child: TextFormField(
         decoration: InputDecoration(
+          prefixIcon: Icon(
+            Icons.lock,
+            color: Colors.deepPurple,
+          ),
           labelText: "Password",
           hintText: "Enter a strong password",
           border: OutlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.cyan,
+              color: Colors.deepPurple,
               style: BorderStyle.solid,
               width: 4.0,
             ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(42.0)),
+            borderSide: BorderSide(color: Colors.deepPurple, width: 2),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(42.0)),
+            borderSide: BorderSide(color: Colors.green, width: 2),
           ),
         ),
         keyboardType: TextInputType.visiblePassword,
@@ -147,6 +183,9 @@ class _SignupScreenState extends State<SignupScreen> {
         style: ElevatedButton.styleFrom(
           minimumSize: Size(150, 50),
           elevation: 20,
+          shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(30.0),
+          ),
         ),
       ),
     );
