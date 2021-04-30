@@ -1,64 +1,74 @@
-import 'package:first_app/data/local_data.dart';
 import 'package:first_app/screens/login.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class SplashScreen extends StatelessWidget {
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 10.0,
-            ),
-            Text(
-              "Let's Hang Out!",
-              style: TextStyle(
-                fontFamily: 'productSans',
-                fontWeight: FontWeight.w600,
-                fontSize: 35,
-              ),
-            ),
-            // imageZone(),
-            SizedBox(
-              height: 30.0,
-            ),
-            Image.asset("assets/images/welcome.png"),
-            SizedBox(
-              height: 30.0,
-            ),
-            Container(
-              width: 200.0,
-              padding: EdgeInsets.all(20.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, LoginScreen.ROUTE_LOGIN);
-                },
-                child: Text(
-                  'Continue',
+    return FutureBuilder(
+      future: _initialization,
+      builder: (BuildContext context, AsyncSnapshot<FirebaseApp> snapshot) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          body: SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 10.0,
+                ),
+                Text(
+                  "Let's Hang Out!",
                   style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
                     fontFamily: 'productSans',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 35,
                   ),
                 ),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(150, 50),
-                  elevation: 20,
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0),
+                // imageZone(),
+                SizedBox(
+                  height: 30.0,
+                ),
+                Image.asset("assets/images/welcome.png"),
+                SizedBox(
+                  height: 30.0,
+                ),
+                Container(
+                  width: 200.0,
+                  padding: EdgeInsets.all(20.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        Navigator.pushNamed(context, LoginScreen.ROUTE_LOGIN);
+                      } else {
+                        return CircularProgressIndicator();
+                      }
+                    },
+                    child: Text(
+                      'Continue',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontFamily: 'productSans',
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(150, 50),
+                      elevation: 20,
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 

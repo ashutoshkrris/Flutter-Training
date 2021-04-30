@@ -2,8 +2,10 @@ import 'package:first_app/screens/login.dart';
 import 'package:first_app/screens/signup.dart';
 import 'package:first_app/screens/splash.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
