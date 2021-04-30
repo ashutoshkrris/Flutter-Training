@@ -14,6 +14,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailCtrl = TextEditingController();
   final TextEditingController _pwdCtrl = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _isHidden = true;
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +99,13 @@ class _LoginScreenState extends State<LoginScreen> {
             Icons.lock,
             color: Colors.deepPurple,
           ),
+          suffixIcon: GestureDetector(
+            onTap: _togglePasswordView,
+            child: Icon(
+              _isHidden ? Icons.visibility : Icons.visibility_off,
+              color: Colors.deepPurple,
+            ),
+          ),
           border: OutlineInputBorder(
             borderSide: BorderSide(
               color: Colors.deepPurple,
@@ -115,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
         keyboardType: TextInputType.visiblePassword,
-        obscureText: true,
+        obscureText: _isHidden,
         validator: (value) {
           if (value == null || value.isEmpty) {
             return "Please enter a strong password";
@@ -127,6 +135,12 @@ class _LoginScreenState extends State<LoginScreen> {
         controller: _pwdCtrl,
       ),
     );
+  }
+
+  void _togglePasswordView() {
+    setState(() {
+      _isHidden = !_isHidden;
+    });
   }
 
   Widget loginBtn() {
