@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app/screens/login.dart';
 import 'package:flutter/material.dart';
 
@@ -59,6 +61,7 @@ class _SignupScreenState extends State<SignupScreen> {
             color: Colors.deepPurple,
           ),
           border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(42.0)),
             borderSide: BorderSide(
               color: Colors.deepPurple,
               style: BorderStyle.solid,
@@ -98,6 +101,7 @@ class _SignupScreenState extends State<SignupScreen> {
           labelText: "Email",
           hintText: "user@domain.com",
           border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(42.0)),
             borderSide: BorderSide(
               color: Colors.deepPurple,
               style: BorderStyle.solid,
@@ -144,6 +148,7 @@ class _SignupScreenState extends State<SignupScreen> {
           labelText: "Password",
           hintText: "Enter a strong password",
           border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(42.0)),
             borderSide: BorderSide(
               color: Colors.deepPurple,
               style: BorderStyle.solid,
@@ -165,7 +170,7 @@ class _SignupScreenState extends State<SignupScreen> {
           if (value == null || value.isEmpty) {
             return "Please enter a strong password";
           } else if (value.length < 8) {
-            return "Password must be atleast 8 characters long";
+            return "Password must be at least 8 characters long";
           }
           return null;
         },
@@ -205,13 +210,33 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  void performSignup() {
+  void performSignup() async {
+    String name = _nameCtrl.text;
+    String email = _emailCtrl.text;
+    String password = _pwdCtrl.text;
     if (_formKey.currentState.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Processing Data'),
-        ),
-      );
+      try {
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        User _currentUser = userCredential.user;
+        _currentUser.sendEmailVerification(); //Send Verification Link
+        storeUserDetails(_currentUser.uid, name, email); //Store these details
+        notifyUser(
+          context,
+          'An email with verification link has been sent to you.',
+        );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          notifyUser(context, 'The password provided is too weak.');
+        } else if (e.code == 'email-already-in-use') {
+          notifyUser(context, 'The account already exists for that email.');
+        }
+      } catch (e) {
+        notifyUser(context, e);
+      }
     }
   }
 
@@ -240,5 +265,32 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
       ],
     );
+  }
+
+  void notifyUser(BuildContext context, String s) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(s),
+      ),
+    );
+  }
+
+  void storeUserDetails(String uid, String name, String email) async {
+    Map<String, dynamic> userDetails = {
+      "name": name,
+      "email": email,
+      "desc": "Nothing to share at the moment!",
+      "image": "",
+    };
+    await FirebaseFirestore.instance
+        .collection('users') // Create collection
+        .doc(uid) // Create a new document with uid
+        .set(userDetails) // Set the user details to that document
+        .then(
+          (_) => notifyUser(context, 'You have been registered successfully!'),
+        )
+        .catchError(
+          (onError) => notifyUser(context, onError),
+        );
   }
 }
