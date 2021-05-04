@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app/components/or_divider.dart';
 import 'package:first_app/components/social_icon.dart';
+import 'package:first_app/screens/home.dart';
 import 'package:first_app/screens/signup.dart';
 import 'package:flutter/material.dart';
 
@@ -53,7 +55,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: TextFormField(
-
         autocorrect: true,
         decoration: InputDecoration(
           prefixIcon: Icon(
@@ -131,8 +132,6 @@ class _LoginScreenState extends State<LoginScreen> {
         validator: (value) {
           if (value == null || value.isEmpty) {
             return "Please enter a strong password";
-          } else if (value.length < 8) {
-            return "Password must be at least 8 characters long";
           }
           return null;
         },
@@ -172,13 +171,28 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void performLogin() {
+  void performLogin() async {
     if (_formKey.currentState.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Processing Data'),
-        ),
-      );
+      try {
+        UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailCtrl.text,
+          password: _pwdCtrl.text,
+        );
+        User user = userCredential.user;
+        if (user.emailVerified) {
+          notifyUser(context, 'Logging you in..');
+          Navigator.pushNamed(context, HomeScreen.ROUTE_HOME);
+        } else {
+          notifyUser(context, 'Please verify your email address.');
+        }
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          notifyUser(context, 'No user found for that email.');
+        } else if (e.code == 'wrong-password') {
+          notifyUser(context, 'Wrong password provided for that user.');
+        }
+      }
     }
   }
 
@@ -226,6 +240,14 @@ class _LoginScreenState extends State<LoginScreen> {
           press: () {},
         ),
       ],
+    );
+  }
+
+  void notifyUser(BuildContext context, String s) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(s),
+      ),
     );
   }
 }

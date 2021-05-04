@@ -228,6 +228,7 @@ class _SignupScreenState extends State<SignupScreen> {
           context,
           'An email with verification link has been sent to you.',
         );
+        Navigator.pushNamed(context, LoginScreen.ROUTE_LOGIN);
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           notifyUser(context, 'The password provided is too weak.');
