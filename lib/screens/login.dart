@@ -53,6 +53,8 @@ class _LoginScreenState extends State<LoginScreen> {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: TextFormField(
+
+        autocorrect: true,
         decoration: InputDecoration(
           prefixIcon: Icon(
             Icons.email,
@@ -61,6 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
           labelText: "Email",
           hintText: "user@domain.com",
           border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(42.0)),
             borderSide: BorderSide(
               color: Colors.deepPurple,
               style: BorderStyle.solid,
@@ -107,6 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(42.0)),
             borderSide: BorderSide(
               color: Colors.deepPurple,
               style: BorderStyle.solid,
@@ -128,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if (value == null || value.isEmpty) {
             return "Please enter a strong password";
           } else if (value.length < 8) {
-            return "Password must be atleast 8 characters long";
+            return "Password must be at least 8 characters long";
           }
           return null;
         },
