@@ -1,6 +1,6 @@
-import 'package:first_app/screens/home.dart';
-import 'package:first_app/screens/login.dart';
-import 'package:first_app/session/session_management.dart';
+import 'home.dart';
+import 'login.dart';
+import '../session/session_management.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 

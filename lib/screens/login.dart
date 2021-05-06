@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:first_app/components/or_divider.dart';
-import 'package:first_app/components/social_icon.dart';
-import 'package:first_app/screens/home.dart';
-import 'package:first_app/screens/signup.dart';
-import 'package:first_app/session/session_management.dart';
+import '../components/or_divider.dart';
+import '../components/social_icon.dart';
+import 'home.dart';
+import 'signup.dart';
+import '../session/session_management.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
