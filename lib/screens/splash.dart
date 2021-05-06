@@ -1,4 +1,6 @@
+import 'package:first_app/screens/home.dart';
 import 'package:first_app/screens/login.dart';
+import 'package:first_app/session/session_management.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -41,7 +43,7 @@ class SplashScreen extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        Navigator.pushNamed(context, LoginScreen.ROUTE_LOGIN);
+                        performRouting(context);
                       } else {
                         return CircularProgressIndicator();
                       }
@@ -70,6 +72,14 @@ class SplashScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  void performRouting(BuildContext context) {
+    SessionManagement.getLoggedInStatus().then((value) {
+      value
+          ? Navigator.pushNamed(context, HomeScreen.ROUTE_HOME)
+          : Navigator.pushNamed(context, LoginScreen.ROUTE_LOGIN);
+    }).catchError((onError) => print(onError));
   }
 
 // Widget imageZone() {

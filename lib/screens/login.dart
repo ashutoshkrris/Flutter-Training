@@ -3,6 +3,7 @@ import 'package:first_app/components/or_divider.dart';
 import 'package:first_app/components/social_icon.dart';
 import 'package:first_app/screens/home.dart';
 import 'package:first_app/screens/signup.dart';
+import 'package:first_app/session/session_management.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -182,6 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
         User user = userCredential.user;
         if (user.emailVerified) {
           notifyUser(context, 'Logging you in..');
+          SessionManagement.storeLoggedInDetails(uid: user.uid);
           Navigator.pushNamed(context, HomeScreen.ROUTE_HOME);
         } else {
           notifyUser(context, 'Please verify your email address.');
