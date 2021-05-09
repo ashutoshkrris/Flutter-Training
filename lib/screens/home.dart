@@ -1,4 +1,6 @@
 import 'package:first_app/data/local_data.dart';
+import 'package:first_app/screens/login.dart';
+import 'package:first_app/session/session_management.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,6 +20,26 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(LocalData.bottomNavList[_selectedTab]["title"]),
+        automaticallyImplyLeading: false,
+        actions: [
+          PopupMenuButton(
+            onSelected: (_) {},
+            itemBuilder: (BuildContext context) => [
+              PopupMenuItem(
+                child: TextButton.icon(
+                  icon: Icon(
+                    Icons.logout,
+                    color: Colors.deepPurple,
+                  ),
+                  label: Text('Log Out'),
+                  onPressed: () {
+                    showAlertDialog(context);
+                  },
+                ),
+              )
+            ],
+          )
+        ],
       ),
       body: LocalData.bottomNavList[_selectedTab]["screen"],
       bottomNavigationBar: createBottomNav(),
@@ -47,6 +69,35 @@ class _HomeScreenState extends State<HomeScreen> {
           _selectedTab = tabIndex;
         });
       },
+    );
+  }
+
+  void showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Text('Do you really want to log out?'),
+        actions: [
+          TextButton(
+            child: Text('Yes'),
+            onPressed: () {
+              SessionManagement.removeLoggedInUser().then((value) {
+                if (value) {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, LoginScreen.ROUTE_LOGIN, (route) => false);
+                }
+              }); // Log out user
+            },
+          ),
+          TextButton(
+            child: Text('Cancel'),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )
+        ],
+      ),
+      barrierDismissible: false,
     );
   }
 }
