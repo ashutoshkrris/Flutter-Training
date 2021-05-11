@@ -22,19 +22,23 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text(LocalData.bottomNavList[_selectedTab]["title"]),
         automaticallyImplyLeading: false,
         actions: [
-          PopupMenuButton(
-            onSelected: (_) {},
+          PopupMenuButton<String>(
+            onSelected: (v) {
+              showAlertDialog(context);
+            },
             itemBuilder: (BuildContext context) => [
-              PopupMenuItem(
-                child: TextButton.icon(
-                  icon: Icon(
-                    Icons.logout,
-                    color: Colors.deepPurple,
-                  ),
-                  label: Text('Log Out'),
-                  onPressed: () {
-                    showAlertDialog(context);
-                  },
+              PopupMenuItem<String>(
+                value: 'item',
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  runSpacing: 20,
+                  children: [
+                    Icon(
+                      Icons.logout,
+                      color: Colors.black,
+                    ),
+                    Text('Log Out'),
+                  ],
                 ),
               )
             ],

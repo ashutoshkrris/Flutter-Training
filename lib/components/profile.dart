@@ -1,6 +1,9 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:first_app/session/session_management.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key key}) : super(key: key);
@@ -10,7 +13,20 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  File _profileImage = null;
+  File _profileImage;
+  String userId;
+  CollectionReference reference =
+      FirebaseFirestore.instance.collection('users');
+
+  @override
+  void initState() {
+    super.initState();
+    SessionManagement.getLoggedInUID().then((value) {
+      setState(() {
+        userId = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +57,7 @@ class _ProfileState extends State<Profile> {
     setState(() {
       if (pickedFile != null) {
         _profileImage = File(pickedFile.path);
+        storeInServer();
       } else {
         print("No Image Selected");
       }
@@ -74,5 +91,39 @@ class _ProfileState extends State<Profile> {
             ),
           );
         });
+  }
+
+  void updateDB(String imageURL) async {
+    Map<String, dynamic> updatedData = {
+      "image": imageURL,
+    };
+    reference
+        .doc(userId)
+        .update(updatedData)
+        .then(
+          (_) => notifyUser(context, 'Profile picture updated successfully!'),
+        )
+        .catchError(
+          (onError) => notifyUser(context, onError),
+        );
+  }
+
+  void storeInServer() async {
+    Reference storage = FirebaseStorage.instance.ref('profile-pics/$userId.png');
+    await storage
+        .putFile(_profileImage)
+        .then((_) async {
+      String imageURL =
+          await storage.getDownloadURL();
+      updateDB(imageURL);
+    }).catchError((onError) => notifyUser(context, onError));
+  }
+
+  void notifyUser(BuildContext context, String s) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(s),
+      ),
+    );
   }
 }
